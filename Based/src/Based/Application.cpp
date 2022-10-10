@@ -1,5 +1,7 @@
 #include "Application.h"
-#include <stdio.h>
+
+#include "Based/Events/ApplicationEvent.h"
+#include "Based/Log.h"
 
 namespace Based {
 
@@ -8,8 +10,10 @@ Application::Application() {}
 Application::~Application() {}
 
 void Application::Run() {
-  while (true) {
-    printf("Hello");
-  }
+  WindowResizeEvent e(1200, 720);
+  BSD_TRACE(e);
+
+  while (true)
+    ;
 }
 } // namespace Based

@@ -1,2 +1,6 @@
-/bin/
-/bin-int*
+bin/
+bin-int/
+.DS_Store
+compile_commands.json
+GenerateProject.sh
+Makefile
