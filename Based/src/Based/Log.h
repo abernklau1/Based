@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Core.h"
 
 // ---FMT package include for spdlog & Clang compilation-----------

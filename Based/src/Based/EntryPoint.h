@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Based.h"
+
 extern Based::Application *Based::CreateApplication();
 
 int main(int argc, char **argv) {

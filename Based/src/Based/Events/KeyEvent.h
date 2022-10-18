@@ -37,16 +37,30 @@ private:
   int m_RepeatCount;
 };
 
-class BASED_API KeyReleasedEvent : KeyEvent {
+class BASED_API KeyReleasedEvent : public KeyEvent {
 public:
   KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
 
   std::string ToString() const override {
     std::stringstream ss;
-    ss << "KeyReleaasedEvent: " << m_KeyCode;
+    ss << "KeyReleasedEvent: " << m_KeyCode;
     return ss.str();
   }
 
   EVENT_CLASS_TYPE(KeyReleased);
 };
+
+class BASED_API KeyTypedEvent : public KeyEvent {
+public:
+  KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
+
+  std::string ToString() const override {
+    std::stringstream ss;
+    ss << "KeyTypedEvent: " << m_KeyCode;
+    return ss.str();
+  }
+
+  EVENT_CLASS_TYPE(KeyTyped);
+};
+
 } // namespace Based

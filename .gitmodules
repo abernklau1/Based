@@ -1,3 +1,12 @@
 [submodule "Based/vendor/spdlog"]
 	path = Based/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Based/Based/vendor/GLFW"]
+	path = Based/Based/vendor/GLFW
+	url = https://github.com/glfw/glfw
+[submodule "Based/vendor/imgui"]
+	path = Based/vendor/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "Based/vendor/glm"]
+	path = Based/vendor/glm
+	url = https://github.com/g-truc/glm

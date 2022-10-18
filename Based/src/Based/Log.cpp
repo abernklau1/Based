@@ -1,4 +1,5 @@
 #include "Log.h"
+#include "bsdpch.h"
 
 namespace Based {
 
