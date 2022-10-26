@@ -10,26 +10,22 @@ configurations {
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
--- Include directories relative to root folder (solution directiory)
--- IncludeDir = {}
--- IncludeDir["GLFW"] = "Based/vendor/GLFW/include"
-
 include "Based/vendor/GLFW"
 include "Based/vendor/Glad"
 include "Based/vendor/imgui"
--- include "Based/vendor/glm"
 
-group "Dependencies"
-include "Based/vendor/GLFW"
-include "Based/vendor/Glad"
-include "Based/vendor/imgui"
--- include "Based/vendor/glm"
-group ""
+-- group "Dependencies"
+-- include "Based/vendor/GLFW"
+-- include "Based/vendor/Glad"
+-- include "Based/vendor/imgui"
+-- group ""
 
 project "Based"
 location "Based"
-kind "SharedLib"
+-- kind "SharedLib"
 language "C++"
+cppdialect "C++17"
+staticruntime "on"
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -41,8 +37,8 @@ files {
   "%{prj.name}/src/**.cpp",
   "%{prj.name}/vendor/glm/glm/**.hpp",
   "%{prj.name}/vendor/glm/glm/**.inl",
-
 }
+
 
 includedirs {
   "%{prj.name}/src",
@@ -63,40 +59,51 @@ links {
   "imgui",
 }
 
+defines {
+  "GLFW_INCLUDE_NONE",
+  "_CRT_SECURE_NO_WARNINGS"
+}
+
 filter "system:macosx"
-cppdialect "C++17"
-staticruntime "On"
 systemversion "12"
+kind "SharedLib"
+staticruntime "off"
 
 defines {
   "BSD_PLATFORM_MAC",
   "BSD_BUILD_SHRD_LIB",
-  "GLFW_INCLUDE_NONE"
 }
 
-postbuildcommands {
-  ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+filter "system:windows"
+systemversion "latest"
+kind "StaticLib"
+
+defines {
+  "BSD_PLATFORM_WINDOWS",
+  "BSD_BUILD_SL"
 }
 
 filter "configurations:Debug"
 defines "BSD_DEBUG"
--- buildoptions "/MDd"
-symbols "On"
+runtime "Debug"
+symbols "on"
 
 filter "configurations:Release"
 defines "BSD_RELEASE"
--- buildoptions "/MD"
-symbols "On"
+runtime "Release"
+optimize "on"
 
 filter "configurations:Dist"
 defines "BSD_DIST"
--- buildoptions "/MD"
-symbols "On"
+runtime "Release"
+optimize "on"
 
 project "Sandbox"
 location "Sandbox"
 kind "ConsoleApp"
 language "C++"
+cppdialect "C++17"
+staticruntime "on"
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -118,9 +125,8 @@ includedirs {
 }
 
 filter "system:macosx"
-cppdialect "C++17"
-staticruntime "On"
 systemversion "12"
+staticruntime "off"
 
 defines {
   "BSD_PLATFORM_MAC",
@@ -128,15 +134,15 @@ defines {
 
 filter "configurations:Debug"
 defines "BSD_DEBUG"
--- buildoptions "/MDd"
+runtime "Debug"
 symbols "On"
 
 filter "configurations:Release"
 defines "BSD_RELEASE"
--- buildoptions "/MD"
-symbols "On"
+runtime "Release"
+optimize "On"
 
 filter "configurations:Dist"
 defines "BSD_DIST"
--- buildoptions "/MD"
-symbols "On"
+runtime "Release"
+optimize "On"

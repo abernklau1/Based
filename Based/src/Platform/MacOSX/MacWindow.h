@@ -1,11 +1,13 @@
 #pragma once
 #include "Based/Window.h"
+#include "Based/Renderer/RendererContext.h"
 
 // --- Modern OpenGL Static Library
 #include <glad/glad.h>
 
-// --- GLFW Staaic Library
+// --- GLFW Static Library
 #include <GLFW/glfw3.h>
+
 
 namespace Based {
 class MacWindow : public Window {
@@ -33,7 +35,7 @@ private:
 
 private:
   GLFWwindow *m_Window;
-
+  RendererContext* m_Context;
   struct WindowData {
     std::string Title;
     unsigned int Width, Height;

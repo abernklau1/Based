@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-
 #include <sstream>
 
 namespace Based {
@@ -57,6 +56,5 @@ public:
   EVENT_CLASS_TYPE(AppRender);
   EVENT_CLASS_CATEGORY(EventCategoryApplication);
 };
-} // namespace Based
 
-// namespace Based
+} // namespace Based

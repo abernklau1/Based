@@ -3,6 +3,9 @@
 #include "Based/Events/ApplicationEvent.h"
 #include "Based/Events/Event.h"
 #include "Based/LayerStack.h"
+#include "Based/Renderer/Shader.h"
+#include "Based/Renderer/Buffer.h"
+#include "Based/Renderer/VertexArray.h"
 #include "Core.h"
 #include "Window.h"
 
@@ -27,10 +30,15 @@ public:
 
 private:
   bool OnWindowClose(WindowCloseEvent &e);
+
   std::unique_ptr<Window> m_Window;
   ImGuiLayer *m_ImGuiLayer;
   bool m_Running = true;
   LayerStack m_LayerStack;
+
+  std::shared_ptr<Shader> m_Shader;
+  std::shared_ptr<VertexArray> m_VertexArray;
+
 
 private:
   static Application *s_Instance;

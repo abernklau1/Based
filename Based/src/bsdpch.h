@@ -12,4 +12,10 @@
 #include <unordered_set>
 #include <vector>
 
+#ifdef BSD_PLATFORM_MAC
+#include <TargetConditionals.h>
+#elif BSD_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
+
 #pragma hdrstop

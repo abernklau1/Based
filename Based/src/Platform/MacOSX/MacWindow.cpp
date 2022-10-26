@@ -7,6 +7,8 @@
 #include "Based/Events/KeyEvent.h"
 #include "Based/Events/MouseEvent.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 #include <glad/glad.h>
 
 namespace Based {
@@ -29,8 +31,10 @@ void MacWindow::Init(const WindowProps &props) {
   m_Data.Width = props.Width;
   m_Data.Height = props.Height;
 
+
   BSD_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width,
                 props.Height);
+
 
   if (!s_GLFWInitialized) {
     // TODO: glfwTerminate on system shutdown
@@ -47,9 +51,12 @@ void MacWindow::Init(const WindowProps &props) {
 
   m_Window = glfwCreateWindow((int)props.Width, (int)props.Height,
                               m_Data.Title.c_str(), nullptr, nullptr);
-  glfwMakeContextCurrent(m_Window);
-  int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-  BSD_CORE_ASSERT(status, "Failed to initialize Glad");
+
+  m_Context = new OpenGLContext(m_Window);
+  m_Context->Init();
+  // ^
+
+
   glfwSetWindowUserPointer(m_Window, &m_Data);
   SetVSync(true);
 
@@ -143,7 +150,7 @@ void MacWindow::Shutdown() { glfwDestroyWindow(m_Window); }
 
 void MacWindow::OnUpdate() {
   glfwPollEvents();
-  glfwSwapBuffers(m_Window);
+  m_Context->SwapBuffers();
 }
 
 void MacWindow::SetVSync(bool enabled) {

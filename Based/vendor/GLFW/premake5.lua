@@ -1,7 +1,7 @@
 project "GLFW"
 kind "StaticLib"
 language "C"
-staticruntime "On"
+staticruntime "on"
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -88,3 +88,11 @@ files {
   "xkb_unicode.c",
   "xkb_unicode.h"
 }
+
+filter "configurations:Debug"
+runtime "Debug"
+symbols "on"
+
+filter "configurations:Release"
+runtime "Release"
+optimize "on"
