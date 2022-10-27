@@ -3,16 +3,16 @@
 #include "Based/Events/ApplicationEvent.h"
 #include "Based/Events/Event.h"
 #include "Based/LayerStack.h"
-#include "Based/Renderer/Shader.h"
-#include "Based/Renderer/Buffer.h"
-#include "Based/Renderer/VertexArray.h"
 #include "Core.h"
 #include "Window.h"
 
 #include "Based/ImGui/ImGuiLayer.h"
 
+#include "Renderer/OrthographicCamera.h"
+
+
 namespace Based {
-class BASED_API Application {
+class Application {
 public:
   Application();
   virtual ~Application();
@@ -35,10 +35,6 @@ private:
   ImGuiLayer *m_ImGuiLayer;
   bool m_Running = true;
   LayerStack m_LayerStack;
-
-  std::shared_ptr<Shader> m_Shader;
-  std::shared_ptr<VertexArray> m_VertexArray;
-
 
 private:
   static Application *s_Instance;

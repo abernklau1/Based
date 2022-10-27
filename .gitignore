@@ -4,3 +4,5 @@ bin-int/
 compile_commands.json
 GenerateProject.sh
 Makefile
+RunProject.sh
+.cache/**

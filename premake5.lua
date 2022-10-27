@@ -61,7 +61,8 @@ links {
 
 defines {
   "GLFW_INCLUDE_NONE",
-  "_CRT_SECURE_NO_WARNINGS"
+  "_CRT_SECURE_NO_WARNINGS",
+  "GLM_FORCE_CTOR_INIT"
 }
 
 filter "system:macosx"
