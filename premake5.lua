@@ -22,7 +22,6 @@ include "Based/vendor/imgui"
 
 project "Based"
 location "Based"
--- kind "SharedLib"
 language "C++"
 cppdialect "C++17"
 staticruntime "on"
@@ -37,6 +36,8 @@ files {
   "%{prj.name}/src/**.cpp",
   "%{prj.name}/vendor/glm/glm/**.hpp",
   "%{prj.name}/vendor/glm/glm/**.inl",
+  "%{prj.name}/vendor/stb_img/stb_image.h",
+  "%{prj.name}/vendor/stb_img/stb_image.cpp",
 }
 
 
@@ -46,7 +47,8 @@ includedirs {
   "%{prj.name}/vendor/GLFW/include",
   "%{prj.name}/vendor/Glad/include",
   "%{prj.name}/vendor/imgui",
-  "%{prj.name}/vendor/glm"
+  "%{prj.name}/vendor/glm",
+  "%{prj.name}/vendor/stb_img"
 }
 
 links {
@@ -62,7 +64,9 @@ links {
 defines {
   "GLFW_INCLUDE_NONE",
   "_CRT_SECURE_NO_WARNINGS",
-  "GLM_FORCE_CTOR_INIT"
+  "GLM_FORCE_CTOR_INIT",
+  -- "GL_SILENCE_DEPRECATION",
+  -- "GLFW_INCLUDE_GLCOREARB"
 }
 
 filter "system:macosx"

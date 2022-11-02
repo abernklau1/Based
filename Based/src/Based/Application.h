@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Based/Events/ApplicationEvent.h"
-#include "Based/Events/Event.h"
-#include "Based/LayerStack.h"
+#include "Events/ApplicationEvent.h"
+#include "Events/Event.h"
+#include "LayerStack.h"
 #include "Core.h"
 #include "Window.h"
 
-#include "Based/ImGui/ImGuiLayer.h"
+#include "ImGui/ImGuiLayer.h"
 
 #include "Renderer/OrthographicCamera.h"
+
+#include "Core/Timestep.h"
 
 
 namespace Based {
@@ -31,11 +33,13 @@ public:
 private:
   bool OnWindowClose(WindowCloseEvent &e);
 
-  std::unique_ptr<Window> m_Window;
+private:
+
+  Scope<Window> m_Window;
   ImGuiLayer *m_ImGuiLayer;
   bool m_Running = true;
   LayerStack m_LayerStack;
-
+  float m_LastFrameTime = 0.0f;
 private:
   static Application *s_Instance;
 };

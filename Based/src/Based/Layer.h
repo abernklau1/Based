@@ -2,6 +2,8 @@
 
 #include "Based/Core.h"
 #include "Based/Events/Event.h"
+#include "Core/Timestep.h"
+
 
 namespace Based {
 class BASED_API Layer {
@@ -11,7 +13,7 @@ public:
 
   virtual void OnAttach() {}
   virtual void OnDetach() {}
-  virtual void OnUpdate() {}
+  virtual void OnUpdate(Timestep ts) {}
   virtual void OnImGuiRender() {}
   virtual void OnEvent(Event &event) {}
 

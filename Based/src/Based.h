@@ -5,6 +5,8 @@
 #include "Based/Application.h"
 #include "Based/Log.h"
 
+#include "Based/Core/Timestep.h"
+
 // --- Layers ------------------------------------
 #include "Based/Layer.h"
 #include "Based/ImGui/ImGuiLayer.h"
@@ -22,6 +24,7 @@
 
 #include "Based/Renderer/Buffer.h"
 #include "Based/Renderer/Shader.h"
+#include "Based/Renderer/Texture.h"
 #include "Based/Renderer/VertexArray.h"
 
 #include "Based/Renderer/OrthographicCamera.h"
