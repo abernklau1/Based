@@ -17,72 +17,71 @@ public:
   // Index Buffer
   // For MacOSX -- Shader
 
-  // --- Triangle -----------------------------------------------------------------------
+ //  // --- Triangle -----------------------------------------------------------------------
 
-  // Vertex Array and Vertex Buffer
-  m_VertexArray.reset(Based::VertexArray::Create());
+ //  // Vertex Array and Vertex Buffer
+ //  m_VertexArray.reset(Based::VertexArray::Create());
 
-  float vertices[3 * 7] = {
-    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-     0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
- };
+ //  float vertices[3 * 7] = {
+ //    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+ //     0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+ //     0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+ // };
 
-  Based::Ref<Based::VertexBuffer> vertexBuffer;
-  vertexBuffer.reset(Based::VertexBuffer::Create(vertices, sizeof(vertices)));
-
-
-    Based::BufferLayout layout = {
-      { Based::ShaderDataType::Float3, "a_Position" },
-      { Based::ShaderDataType::Float4, "a_Color"}
-    };
-    vertexBuffer->SetLayout(layout);
+ //  Based::Ref<Based::VertexBuffer> vertexBuffer;
+ //  vertexBuffer.reset(Based::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 
-    m_VertexArray->AddVertexBuffer(vertexBuffer);
+ //    Based::BufferLayout layout = {
+ //      { Based::ShaderDataType::Float3, "a_Position" },
+ //      { Based::ShaderDataType::Float4, "a_Color"}
+ //    };
+ //    vertexBuffer->SetLayout(layout);
 
-  // Index Buffer
-  uint32_t indices[3] = {
-    0, 1, 2
-  };
+ //    m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-  Based::Ref<Based::IndexBuffer> indexBuffer;
-  indexBuffer.reset(Based::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-  m_VertexArray->SetIndexBuffer(indexBuffer);
+ //  // Index Buffer
+ //  uint32_t indices[3] = {
+ //    0, 1, 2
+ //  };
 
-  // Shader
-  std::string vertexSrc = R"(
-    #version 410 core
+ //  Based::Ref<Based::IndexBuffer> indexBuffer;
+ //  indexBuffer.reset(Based::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+ //  m_VertexArray->SetIndexBuffer(indexBuffer);
 
-    layout(location = 0) in vec4 a_Position;
-    layout(location = 1) in vec4 a_Color;
+ //  // Shader
+ //  std::string vertexSrc = R"(
+ //    #version 410 core
 
-    uniform mat4 u_ViewProjection;
-    uniform mat4 u_Transform;
+ //    layout(location = 0) in vec4 a_Position;
+ //    layout(location = 1) in vec4 a_Color;
 
-    out vec4 v_Position;
-    out vec4 v_Color;
+ //    uniform mat4 u_ViewProjection;
+ //    uniform mat4 u_Transform;
 
-    void main() {
-      v_Position = a_Position;
-      v_Color = a_Color;
-      gl_Position = u_ViewProjection * u_Transform * a_Position;
-    })";
+ //    out vec4 v_Position;
+ //    out vec4 v_Color;
 
-  std::string fragmentSrc = R"(
-    #version 410 core
+ //    void main() {
+ //      v_Position = a_Position;
+ //      v_Color = a_Color;
+ //      gl_Position = u_ViewProjection * u_Transform * a_Position;
+ //    })";
 
-    layout(location = 0) out vec4 color;
+ //  std::string fragmentSrc = R"(
+ //    #version 410 core
 
-    in vec4 v_Position;
-    in vec4 v_Color;
+ //    layout(location = 0) out vec4 color;
 
-    void main() {
-      color = vec4(v_Position * 0.5 + 0.5);
-      color = v_Color;
-    })";
+ //    in vec4 v_Position;
+ //    in vec4 v_Color;
 
-  m_Shader.reset(Based::Shader::Create(vertexSrc, fragmentSrc));
+ //    void main() {
+ //      color = vec4(v_Position * 0.5 + 0.5);
+ //      color = v_Color;
+ //    })";
+
+ //  m_Shader.reset(Based::Shader::Create(vertexSrc, fragmentSrc));
 
 
   // ------------------------------------------------------------------------------------
@@ -148,17 +147,17 @@ public:
       color = vec4(u_Color, 1.0);
     })";
 
-  m_SquareShader.reset(Based::Shader::Create(squareVSrc, squareFSrc));
+  m_SquareShader = Based::Shader::Create("FlatColorShader", squareVSrc, squareFSrc);
 
   // Texture Shader
 
-  m_TextureShader.reset(Based::Shader::Create("Sandbox/assets/shaders/Texture.glsl"));
+  auto textureShader = m_ShaderLibrary.Load("Sandbox/assets/shaders/Texture.glsl");
 
   m_Texture = Based::Texture2D::Create("Sandbox/assets/textures/Checkerboard.png");
 
-  std::dynamic_pointer_cast<Based::OpenGLShader>(m_TextureShader)->Bind();
+  std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)->Bind();
 
-  std::dynamic_pointer_cast<Based::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+  std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
   }
 
@@ -204,8 +203,10 @@ public:
       }
     }
 
+    auto textureShader = m_ShaderLibrary.Get("Texture");
+
     m_Texture->Bind();
-    Based::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+    Based::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 
     // Triangle
@@ -224,10 +225,11 @@ public:
   }
 
 private:
+  Based::ShaderLibrary m_ShaderLibrary;
   Based::Ref<Based::Shader> m_Shader;
   Based::Ref<Based::VertexArray> m_VertexArray;
 
-  Based::Ref<Based::Shader> m_SquareShader, m_TextureShader;
+  Based::Ref<Based::Shader> m_SquareShader;
   Based::Ref<Based::VertexArray> m_SquareVA;
 
   Based::Ref<Based::Texture2D> m_Texture;

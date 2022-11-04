@@ -20,9 +20,16 @@ OpenGLShader::OpenGLShader(const std::string& filePath) {
   std::string source = ReadFile(filePath);
   auto shaderSources = PreProcess(source);
   Compile(shaderSources);
+
+  // Extract name from filePath
+  auto lastSlash = filePath.find_last_of("/\\");
+  lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+  auto lastDot = filePath.rfind(".");
+  auto count = lastDot == std::string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
+  m_ShaderName = filePath.substr(lastSlash, count);
 }
 
-OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc) {
+OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : m_ShaderName(name) {
   std::unordered_map<GLenum, std::string> sources;
   sources[GL_VERTEX_SHADER] = vertexSrc;
   sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -32,8 +39,9 @@ OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& frag
 void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
 
   GLuint program = glCreateProgram();
-  std::vector<GLenum> glShaderIDs(shaderSources.size());
-
+  BSD_CORE_ASSERT(shaderSources.size() <= 2, "Currently only support two shaders");
+  std::array<GLenum, 2> glShaderIDs;
+  int glShaderIDIndex = 0;
 for (auto& kv : shaderSources) {
     GLenum type = kv.first;
     const std::string& source = kv.second;
@@ -63,7 +71,7 @@ for (auto& kv : shaderSources) {
 	  }
 
     glAttachShader(program, shader);
-    glShaderIDs.push_back(shader);
+    glShaderIDs[glShaderIDIndex++] = shader;
   }
 
 glLinkProgram(program);
