@@ -11,7 +11,7 @@
 
 class ExampleLayer : public Based::Layer {
 public:
-  ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f) {
+  ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f) {
   // Vertex Array
   // Vertex Buffer
   // Index Buffer
@@ -163,31 +163,14 @@ public:
 
   void OnUpdate(Based::Timestep ts) override {
 
-    if (Based::Input::IsKeyPressed(BSD_KEY_LEFT))
-      m_CameraPosition.x -= m_CameraMovementSpeed * ts;
+    // Update
+    m_CameraController.OnUpdate(ts);
 
-    else if (Based::Input::IsKeyPressed(BSD_KEY_RIGHT))
-      m_CameraPosition.x += m_CameraMovementSpeed * ts;
-
-    if (Based::Input::IsKeyPressed(BSD_KEY_UP))
-      m_CameraPosition.y += m_CameraMovementSpeed * ts;
-
-    else if (Based::Input::IsKeyPressed(BSD_KEY_DOWN))
-      m_CameraPosition.y -= m_CameraMovementSpeed * ts;
-
-    if (Based::Input::IsKeyPressed(BSD_KEY_A))
-      m_CameraRotation -= m_CameraRotationSpeed * ts;
-
-    if (Based::Input::IsKeyPressed(BSD_KEY_D))
-      m_CameraRotation += m_CameraRotationSpeed * ts;
-
+    // Renderer 
     Based::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
     Based::RenderCommand::Clear();
 
-    m_Camera.SetPosition(m_CameraPosition);
-    m_Camera.SetRotation(m_CameraRotation);
-
-    Based::Renderer::BeginScene(m_Camera);
+    Based::Renderer::BeginScene(m_CameraController.GetCamera());
 
 
     static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -221,7 +204,8 @@ public:
     ImGui::End();
   }
 
-  void OnEvent(Based::Event &event) override {
+  void OnEvent(Based::Event &e) override {
+    m_CameraController.OnEvent(e);
   }
 
 private:
@@ -234,12 +218,7 @@ private:
 
   Based::Ref<Based::Texture2D> m_Texture;
 
-  Based::OrthographicCamera m_Camera;
-  glm::vec3 m_CameraPosition;
-  float m_CameraRotation = 0;
-  float m_CameraMovementSpeed = 1.0f;
-  float m_CameraRotationSpeed = 10.0f;
-
+  Based::OrthographicCameraController m_CameraController;
 
   glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };

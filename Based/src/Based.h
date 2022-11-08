@@ -7,6 +7,7 @@
 
 #include "Based/Core/Timestep.h"
 
+#include "Based/OrthographicCameraController.h"
 // --- Layers ------------------------------------
 #include "Based/Layer.h"
 #include "Based/ImGui/ImGuiLayer.h"
