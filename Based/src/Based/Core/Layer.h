@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Based/Core.h"
+#include "Based/Core/Core.h"
 #include "Based/Events/Event.h"
-#include "Core/Timestep.h"
+#include "Based/Core/Timestep.h"
 
 
 namespace Based {

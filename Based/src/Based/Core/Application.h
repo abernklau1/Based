@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Events/ApplicationEvent.h"
-#include "Events/Event.h"
-#include "LayerStack.h"
-#include "Core.h"
-#include "Window.h"
+#include "Based/Events/ApplicationEvent.h"
+#include "Based/Events/Event.h"
+#include "Based/Core/LayerStack.h"
+#include "Based/Core/Core.h"
+#include "Based/Core/Window.h"
 
-#include "ImGui/ImGuiLayer.h"
+#include "Based/ImGui/ImGuiLayer.h"
 
-#include "Renderer/OrthographicCamera.h"
+#include "Based/Renderer/OrthographicCamera.h"
 
-#include "Core/Timestep.h"
+#include "Based/Core/Timestep.h"
 
 
 namespace Based {
@@ -32,12 +32,13 @@ public:
 
 private:
   bool OnWindowClose(WindowCloseEvent &e);
-
+  bool OnWindowResize(WindowResizeEvent &e);
 private:
 
   Scope<Window> m_Window;
   ImGuiLayer *m_ImGuiLayer;
   bool m_Running = true;
+  bool m_Minimize = false;
   LayerStack m_LayerStack;
   float m_LastFrameTime = 0.0f;
 private:

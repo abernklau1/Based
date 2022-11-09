@@ -2,7 +2,6 @@
 #include "bsdpch.h"
 #include "Buffer.h"
 #include "Renderer.h"
-#include "Based/Log.h"
 
 namespace Based {
 

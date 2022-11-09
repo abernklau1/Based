@@ -2,21 +2,21 @@
 
 // For use by Based Applications
 
-#include "Based/Application.h"
-#include "Based/Log.h"
+#include "Based/Core/Application.h"
+#include "Based/Core/Log.h"
 
 #include "Based/Core/Timestep.h"
 
-#include "Based/OrthographicCameraController.h"
+#include "Based/Renderer/OrthographicCameraController.h"
 // --- Layers ------------------------------------
-#include "Based/Layer.h"
+#include "Based/Core/Layer.h"
 #include "Based/ImGui/ImGuiLayer.h"
 // -----------------------------------------------
 
 // --- Input and Codes ---------------------------
-#include "Based/Input.h"
-#include "Based/MouseButtonCodes.h"
-#include "Based/KeyCodes.h"
+#include "Based/Core/Input.h"
+#include "Based/Core/MouseButtonCodes.h"
+#include "Based/Core/KeyCodes.h"
 // -----------------------------------------------
 
 // --- Renderer ----------------------------------
@@ -32,5 +32,5 @@
 // -----------------------------------------------
 
 // --- Entry Point -------------------------------
-#include "Based/EntryPoint.h"
+#include "Based/Core/EntryPoint.h"
 // -----------------------------------------------

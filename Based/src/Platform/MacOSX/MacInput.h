@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Based/Input.h"
+#include "Based/Core/Input.h"
 
 namespace Based {
 class MacInput : public Input {

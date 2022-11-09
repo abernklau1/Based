@@ -1,8 +1,8 @@
 #include "bsdpch.h"
 #include "OrthographicCameraController.h"
 
-#include "Based/Input.h"
-#include "Based/KeyCodes.h"
+#include "Based/Core/Input.h"
+#include "Based/Core/KeyCodes.h"
 namespace Based {
 
 OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation) : m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation) {
