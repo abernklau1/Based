@@ -31,10 +31,8 @@ void MacWindow::Init(const WindowProps &props) {
   m_Data.Width = props.Width;
   m_Data.Height = props.Height;
 
-
   BSD_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width,
                 props.Height);
-
 
   if (!s_GLFWInitialized) {
     // TODO: glfwTerminate on system shutdown
@@ -55,7 +53,6 @@ void MacWindow::Init(const WindowProps &props) {
   m_Context = new OpenGLContext(m_Window);
   m_Context->Init();
   // ^
-
 
   glfwSetWindowUserPointer(m_Window, &m_Data);
   SetVSync(true);

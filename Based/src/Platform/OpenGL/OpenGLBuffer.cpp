@@ -1,5 +1,5 @@
-#include "bsdpch.h"
 #include "OpenGLBuffer.h"
+#include "bsdpch.h"
 #include <glad/glad.h>
 
 namespace Based {
@@ -17,20 +17,19 @@ OpenGLVertexBuffer::~OpenGLVertexBuffer() {
 }
 
 void OpenGLVertexBuffer::Bind() const {
-glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
+  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
 }
 
-void OpenGLVertexBuffer::Unbind() const {
-glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
+void OpenGLVertexBuffer::Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
 // --- Index Buffer Creation --------------
 
-OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count) : m_Count(count) {
+OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count)
+    : m_Count(count) {
   glGenBuffers(1, &m_IndexBufferID);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferID);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices,
+               GL_STATIC_DRAW);
 }
 
 OpenGLIndexBuffer::~OpenGLIndexBuffer() {
@@ -43,7 +42,7 @@ void OpenGLIndexBuffer::Bind() const {
 }
 
 void OpenGLIndexBuffer::Unbind() const {
-glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-}
+} // namespace Based

@@ -1,29 +1,29 @@
 #type vertex
-#version 330 core
+#version 410 core
 
 layout(location = 0) in vec4 a_Position;
-layout(location = 1) in vec2 a_TextCoord;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
 
-out vec2 v_TextCoord;
+out vec4 v_Position;
 
 void main() {
-  v_TextCoord = a_TextCoord;
+  v_Position = a_Position;
   gl_Position = u_ViewProjection * u_Transform * a_Position;
 }
 
 #type fragment
-#version 330 core
+#version 410 core
 
 layout(location = 0) out vec4 color;
 
-in vec2 v_TextCoord;
+in vec4 v_Position;
 
 uniform vec4 u_Color;
-uniform sampler2D u_Texture;
 
 void main() {
-  color = texture(u_Texture, v_TextCoord) * u_Color;
+  color = u_Color;
 }
+
+

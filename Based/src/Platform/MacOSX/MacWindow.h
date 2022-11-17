@@ -8,7 +8,6 @@
 // --- GLFW Static Library
 #include <GLFW/glfw3.h>
 
-
 namespace Based {
 class MacWindow : public Window {
 public:
@@ -35,7 +34,7 @@ private:
 
 private:
   GLFWwindow *m_Window;
-  RendererContext* m_Context;
+  RendererContext *m_Context;
   struct WindowData {
     std::string Title;
     unsigned int Width, Height;

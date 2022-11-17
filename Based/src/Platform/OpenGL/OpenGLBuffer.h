@@ -1,9 +1,9 @@
 #pragma once
-#include "bsdpch.h"
 #include "Based/Renderer/Buffer.h"
+#include "bsdpch.h"
 
 namespace Based {
-class OpenGLVertexBuffer: public VertexBuffer {
+class OpenGLVertexBuffer : public VertexBuffer {
 
 public:
   OpenGLVertexBuffer(float *vertices, uint32_t size);
@@ -12,15 +12,17 @@ public:
   virtual void Bind() const override;
   virtual void Unbind() const override;
 
-  virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout;}
-  virtual const BufferLayout& GetLayout() const override { return m_Layout; }
+  virtual void SetLayout(const BufferLayout &layout) override {
+    m_Layout = layout;
+  }
+  virtual const BufferLayout &GetLayout() const override { return m_Layout; }
 
 private:
   uint32_t m_VertexBufferID;
   BufferLayout m_Layout;
 };
 
-class OpenGLIndexBuffer: public IndexBuffer {
+class OpenGLIndexBuffer : public IndexBuffer {
 
 public:
   OpenGLIndexBuffer(uint32_t *indices, uint32_t count);
@@ -35,4 +37,4 @@ private:
   uint32_t m_IndexBufferID;
   uint32_t m_Count;
 };
-}
+} // namespace Based

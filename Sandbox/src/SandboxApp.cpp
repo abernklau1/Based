@@ -1,231 +1,192 @@
-#include "Based.h"
+// #include "Based.h"
 
-#include "Based/Events/KeyEvent.h"
-#include "Platform/OpenGL/OpenGLShader.h"
+// #include "Based/Core/EntryPoint.h"
+// #include "Platform/OpenGL/OpenGLShader.h"
+
+#include "Sandbox2D/Sandbox2D.h"
 
 #include <imgui/imgui.h>
 
-#include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+Sandbox2D::Sandbox2D()
+    : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) {}
 
-class ExampleLayer : public Based::Layer {
-public:
-  ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f) {
-  // Vertex Array
-  // Vertex Buffer
-  // Index Buffer
-  // For MacOSX -- Shader
+void Sandbox2D::OnAttach() {
+  m_CheckerboardTexture =
+      Based::Texture2D::Create("Sandbox/assets/textures/Checkerboard.png");
+}
 
- //  // --- Triangle -----------------------------------------------------------------------
+void Sandbox2D::OnDetach() {}
 
- //  // Vertex Array and Vertex Buffer
- //  m_VertexArray.reset(Based::VertexArray::Create());
+void Sandbox2D::OnUpdate(Based::Timestep ts) {
+  // Update
+  m_CameraController.OnUpdate(ts);
 
- //  float vertices[3 * 7] = {
- //    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
- //     0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
- //     0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
- // };
+  // Renderer
+  Based::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+  Based::RenderCommand::Clear();
 
- //  Based::Ref<Based::VertexBuffer> vertexBuffer;
- //  vertexBuffer.reset(Based::VertexBuffer::Create(vertices, sizeof(vertices)));
+  Based::Renderer2D::BeginScene(m_CameraController.GetCamera());
+  Based::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.0f, 1.0f},
+                              {0.8f, 0.2f, 0.3f, 1.0f});
+  Based::Renderer2D::DrawQuad({-1.0f, -1.0f}, {1.0f, 1.0f},
+                              m_CheckerboardTexture);
+  Based::Renderer2D::EndScene();
+}
 
+void Sandbox2D::OnImGuiRender() {
+  ImGui::Begin("Settings");
+  ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+  ImGui::End();
+}
 
- //    Based::BufferLayout layout = {
- //      { Based::ShaderDataType::Float3, "a_Position" },
- //      { Based::ShaderDataType::Float4, "a_Color"}
- //    };
- //    vertexBuffer->SetLayout(layout);
+void Sandbox2D::OnEvent(Based::Event &e) { m_CameraController.OnEvent(e); }
 
- //    m_VertexArray->AddVertexBuffer(vertexBuffer);
+// #include <glm/ext/matrix_transform.hpp>
 
- //  // Index Buffer
- //  uint32_t indices[3] = {
- //    0, 1, 2
- //  };
+// class ExampleLayer : public Based::Layer {
+// public:
+//   ExampleLayer() : Layer("Example"), m_CameraController(1280.0f / 720.0f) {
+//     // --- Square
+//     //
+//     -------------------------------------------------------------------------
 
- //  Based::Ref<Based::IndexBuffer> indexBuffer;
- //  indexBuffer.reset(Based::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
- //  m_VertexArray->SetIndexBuffer(indexBuffer);
+//     // Vertex Array and Vertex Buffer
+//     m_SquareVA = Based::VertexArray::Create();
 
- //  // Shader
- //  std::string vertexSrc = R"(
- //    #version 410 core
+//     float squareVertices[5 * 4] = {
+//         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
+//         0.5f,  0.5f,  0.0f, 1.0f, 1.0f, -0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
+//     };
 
- //    layout(location = 0) in vec4 a_Position;
- //    layout(location = 1) in vec4 a_Color;
+//     Based::Ref<Based::VertexBuffer> squareVB;
+//     squareVB.reset(
+//         Based::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
- //    uniform mat4 u_ViewProjection;
- //    uniform mat4 u_Transform;
+//     squareVB->SetLayout({{Based::ShaderDataType::Float3, "a_Position"},
+//                          {Based::ShaderDataType::Float2, "a_TextCoord"}});
 
- //    out vec4 v_Position;
- //    out vec4 v_Color;
+//     m_SquareVA->AddVertexBuffer(squareVB);
 
- //    void main() {
- //      v_Position = a_Position;
- //      v_Color = a_Color;
- //      gl_Position = u_ViewProjection * u_Transform * a_Position;
- //    })";
+//     // Index Buffer
+//     uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
 
- //  std::string fragmentSrc = R"(
- //    #version 410 core
+//     Based::Ref<Based::IndexBuffer> squareIB;
+//     squareIB.reset(Based::IndexBuffer::Create(
+//         squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+//     m_SquareVA->SetIndexBuffer(squareIB);
 
- //    layout(location = 0) out vec4 color;
+//     // Shader
+//     std::string squareVSrc = R"(
+//     #version 410 core
 
- //    in vec4 v_Position;
- //    in vec4 v_Color;
+//     layout(location = 0) in vec4 a_Position;
 
- //    void main() {
- //      color = vec4(v_Position * 0.5 + 0.5);
- //      color = v_Color;
- //    })";
+//     uniform mat4 u_ViewProjection;
+//     uniform mat4 u_Transform;
 
- //  m_Shader.reset(Based::Shader::Create(vertexSrc, fragmentSrc));
+//     out vec4 v_Position;
 
+//     void main() {
+//       v_Position = a_Position;
+//       gl_Position = u_ViewProjection * u_Transform * a_Position;
+//     })";
 
-  // ------------------------------------------------------------------------------------
+//     std::string squareFSrc = R"(
+//     #version 410 core
 
-  // --- Square -------------------------------------------------------------------------
+//     layout(location = 0) out vec4 color;
 
-  // Vertex Array and Vertex Buffer
-  m_SquareVA.reset(Based::VertexArray::Create());
+//     in vec4 v_Position;
 
-  float squareVertices[5 * 4] = {
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
- };
+//     uniform vec3 u_Color;
 
-    Based::Ref<Based::VertexBuffer> squareVB;
-  squareVB.reset(Based::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+//     void main() {
+//       color = vec4(u_Color, 1.0);
+//     })";
 
-  squareVB->SetLayout({
-      { Based::ShaderDataType::Float3, "a_Position" },
-      { Based::ShaderDataType::Float2, "a_TextCoord"}
-    });
+//     m_SquareShader =
+//         Based::Shader::Create("FlatColorShader", squareVSrc, squareFSrc);
 
+//     // Texture Shader
 
-    m_SquareVA->AddVertexBuffer(squareVB);
+//     auto textureShader =
+//         m_ShaderLibrary.Load("Sandbox/assets/shaders/Texture.glsl");
 
-  // Index Buffer
-  uint32_t squareIndices[6] = {
-    0, 1, 2, 2, 3, 0
-  };
+//     m_Texture =
+//         Based::Texture2D::Create("Sandbox/assets/textures/Checkerboard.png");
 
-  Based::Ref<Based::IndexBuffer> squareIB;
-  squareIB.reset(Based::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-  m_SquareVA->SetIndexBuffer(squareIB);
+//     std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)->Bind();
 
-  // Shader
-  std::string squareVSrc = R"(
-    #version 410 core
+//     std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)
+//         ->UploadUniformInt("u_Texture", 0);
+//   }
 
-    layout(location = 0) in vec4 a_Position;
+//   void OnUpdate(Based::Timestep ts) override {
 
-    uniform mat4 u_ViewProjection;
-    uniform mat4 u_Transform;
+//     // Update
+//     m_CameraController.OnUpdate(ts);
 
-    out vec4 v_Position;
+//     // Renderer
+//     Based::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+//     Based::RenderCommand::Clear();
 
-    void main() {
-      v_Position = a_Position;
-      gl_Position = u_ViewProjection * u_Transform * a_Position;
-    })";
+//     Based::Renderer::BeginScene(m_CameraController.GetCamera());
 
-  std::string squareFSrc = R"(
-    #version 410 core
+//     static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-    layout(location = 0) out vec4 color;
+//     std::dynamic_pointer_cast<Based::OpenGLShader>(m_SquareShader)->Bind();
+//     std::dynamic_pointer_cast<Based::OpenGLShader>(m_SquareShader)
+//         ->UploadUniformFloat3("u_Color", m_SquareColor);
 
-    in vec4 v_Position;
+//     for (int y = 0; y < 20; y++) {
+//       for (int x = 0; x < 20; x++) {
+//         glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+//         glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+//         Based::Renderer::Submit(m_SquareShader, m_SquareVA, transform);
+//       }
+//     }
 
-    uniform vec3 u_Color;
+//     auto textureShader = m_ShaderLibrary.Get("Texture");
 
-    void main() {
-      color = vec4(u_Color, 1.0);
-    })";
+//     m_Texture->Bind();
+//     Based::Renderer::Submit(textureShader, m_SquareVA,
+//                             glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-  m_SquareShader = Based::Shader::Create("FlatColorShader", squareVSrc, squareFSrc);
+//     // Triangle
+//     // Based::Renderer::Submit(m_Shader, m_VertexArray);
 
-  // Texture Shader
+//     Based::Renderer::EndScene();
+//   }
 
-  auto textureShader = m_ShaderLibrary.Load("Sandbox/assets/shaders/Texture.glsl");
+//   void OnImGuiRender() override {
+//     ImGui::Begin("Settings");
+//     ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+//     ImGui::End();
+//   }
 
-  m_Texture = Based::Texture2D::Create("Sandbox/assets/textures/Checkerboard.png");
+//   void OnEvent(Based::Event &e) override { m_CameraController.OnEvent(e); }
 
-  std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)->Bind();
+// private:
+// Based::ShaderLibrary m_ShaderLibrary;
+// Based::Ref<Based::Shader> m_Shader;
+// Based::Ref<Based::VertexArray> m_VertexArray;
 
-  std::dynamic_pointer_cast<Based::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
+// Based::Ref<Based::Shader> m_SquareShader;
+// Based::Ref<Based::VertexArray> m_SquareVA;
 
-  }
+// Based::Ref<Based::Texture2D> m_Texture;
 
-  void OnUpdate(Based::Timestep ts) override {
+// Based::OrthographicCameraController m_CameraController;
 
-    // Update
-    m_CameraController.OnUpdate(ts);
-
-    // Renderer 
-    Based::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
-    Based::RenderCommand::Clear();
-
-    Based::Renderer::BeginScene(m_CameraController.GetCamera());
-
-
-    static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
-    std::dynamic_pointer_cast<Based::OpenGLShader>(m_SquareShader)->Bind();
-    std::dynamic_pointer_cast<Based::OpenGLShader>(m_SquareShader)->UploadUniformFloat3("u_Color", m_SquareColor);
-
-    for (int y = 0; y < 20; y++) {
-      for (int x = 0; x < 20; x++) {
-        glm::vec3 pos(x * 0.11f,y * 0.11f, 0.0f);
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-        Based::Renderer::Submit(m_SquareShader, m_SquareVA, transform);
-      }
-    }
-
-    auto textureShader = m_ShaderLibrary.Get("Texture");
-
-    m_Texture->Bind();
-    Based::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-
-
-    // Triangle
-    // Based::Renderer::Submit(m_Shader, m_VertexArray);
-
-    Based::Renderer::EndScene();
-  }
-
-  void OnImGuiRender() override {
-    ImGui::Begin("Settings");
-    ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
-    ImGui::End();
-  }
-
-  void OnEvent(Based::Event &e) override {
-    m_CameraController.OnEvent(e);
-  }
-
-private:
-  Based::ShaderLibrary m_ShaderLibrary;
-  Based::Ref<Based::Shader> m_Shader;
-  Based::Ref<Based::VertexArray> m_VertexArray;
-
-  Based::Ref<Based::Shader> m_SquareShader;
-  Based::Ref<Based::VertexArray> m_SquareVA;
-
-  Based::Ref<Based::Texture2D> m_Texture;
-
-  Based::OrthographicCameraController m_CameraController;
-
-  glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
-};
+// glm::vec3 m_SquareColor = {0.2f, 0.3f, 0.8f};
+// }
+// ;
 
 class Sandbox : public Based::Application {
 public:
-  Sandbox() { PushLayer(new ExampleLayer()); }
+  Sandbox() { PushLayer(new Sandbox2D()); }
 
   ~Sandbox() {}
 };

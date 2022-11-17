@@ -43,7 +43,8 @@ void Application::OnEvent(Event &e) {
   dispatcher.Dispatch<WindowCloseEvent>(
       BSD_BIND_EVENT_FN(Application::OnWindowClose));
 
-  dispatcher.Dispatch<WindowResizeEvent>(BSD_BIND_EVENT_FN(Application::OnWindowResize));
+  dispatcher.Dispatch<WindowResizeEvent>(
+      BSD_BIND_EVENT_FN(Application::OnWindowResize));
   for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 
     (*--it)->OnEvent(e);
@@ -58,7 +59,6 @@ void Application::Run() {
     float time = (float)glfwGetTime(); // Platform::GetTime()
     Timestep timestep = time - m_LastFrameTime;
     m_LastFrameTime = time;
-
 
     if (!m_Minimize) {
 
@@ -80,7 +80,6 @@ bool Application::OnWindowClose(WindowCloseEvent &e) {
   m_Running = false;
   return true;
 }
-
 
 bool Application::OnWindowResize(WindowResizeEvent &e) {
   if (e.GetWidth() == 0 || e.GetHeight() == 0) {

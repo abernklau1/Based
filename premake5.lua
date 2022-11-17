@@ -65,8 +65,6 @@ defines {
   "GLFW_INCLUDE_NONE",
   "_CRT_SECURE_NO_WARNINGS",
   "GLM_FORCE_CTOR_INIT",
-  -- "GL_SILENCE_DEPRECATION",
-  -- "GLFW_INCLUDE_GLCOREARB"
 }
 
 filter "system:macosx"
