@@ -13,6 +13,7 @@ OrthographicCameraController::OrthographicCameraController(float aspectRatio,
       m_Rotation(rotation) {}
 
 void OrthographicCameraController::OnUpdate(Timestep ts) {
+  BSD_PROFILE_FUNCTION();
 
   if (Input::IsKeyPressed(BSD_KEY_A))
     m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
@@ -42,6 +43,7 @@ void OrthographicCameraController::OnUpdate(Timestep ts) {
 }
 
 void OrthographicCameraController::OnEvent(Event &e) {
+  BSD_PROFILE_FUNCTION();
   EventDispatcher dispatcher(e);
   dispatcher.Dispatch<MouseScrolledEvent>(
       BSD_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
@@ -50,6 +52,7 @@ void OrthographicCameraController::OnEvent(Event &e) {
 }
 
 bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &e) {
+  BSD_PROFILE_FUNCTION();
   m_ZoomLevel -= e.GetYOffset();
   m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel,
                          m_AspectRatio * m_ZoomLevel, -m_ZoomLevel,
@@ -58,6 +61,7 @@ bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &e) {
 }
 
 bool OrthographicCameraController::OnWindowResize(WindowResizeEvent &e) {
+  BSD_PROFILE_FUNCTION();
   float yScale = e.GetHeight() / 720.0f;
   m_AspectRatio = yScale * (float)e.GetWidth() / (float)e.GetHeight();
   m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel,

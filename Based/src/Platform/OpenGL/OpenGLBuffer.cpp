@@ -7,20 +7,26 @@ namespace Based {
 // --- Vertex Buffer Creation ------------
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, uint32_t size) {
+  BSD_PROFILE_FUNCTION();
   glGenBuffers(1, &m_VertexBufferID);
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
   glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
 OpenGLVertexBuffer::~OpenGLVertexBuffer() {
+  BSD_PROFILE_FUNCTION();
   glDeleteBuffers(1, &m_VertexBufferID);
 }
 
 void OpenGLVertexBuffer::Bind() const {
+  BSD_PROFILE_FUNCTION();
   glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
 }
 
-void OpenGLVertexBuffer::Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
+void OpenGLVertexBuffer::Unbind() const {
+  BSD_PROFILE_FUNCTION();
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
 // --- Index Buffer Creation --------------
 

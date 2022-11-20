@@ -1,5 +1,6 @@
 #include "MacWindow.h"
 #include "Based/Core/Log.h"
+#include "GLFW/glfw3.h"
 #include "bsdpch.h"
 
 // Events
@@ -12,21 +13,28 @@
 #include <glad/glad.h>
 
 namespace Based {
-static bool s_GLFWInitialized = false;
+static uint32_t s_GLFWWindowCount = 0;
 
 static void GLFWErrorCallback(int error, const char *description) {
   BSD_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
-Window *Window::Create(const WindowProps &props) {
-  return new MacWindow(props);
+Scope<Window> Window::Create(const WindowProps &props) {
+  return CreateScope<MacWindow>(props);
 }
 
-MacWindow::MacWindow(const WindowProps &props) { Init(props); }
+MacWindow::MacWindow(const WindowProps &props) {
+  BSD_PROFILE_FUNCTION();
+  Init(props);
+}
 
-MacWindow::~MacWindow() { Shutdown(); }
+MacWindow::~MacWindow() {
+  BSD_PROFILE_FUNCTION();
+  Shutdown();
+}
 
 void MacWindow::Init(const WindowProps &props) {
+  BSD_PROFILE_FUNCTION();
   m_Data.Title = props.Title;
   m_Data.Width = props.Width;
   m_Data.Height = props.Height;
@@ -34,12 +42,10 @@ void MacWindow::Init(const WindowProps &props) {
   BSD_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width,
                 props.Height);
 
-  if (!s_GLFWInitialized) {
-    // TODO: glfwTerminate on system shutdown
+  if (s_GLFWWindowCount == 0) {
     int success = glfwInit();
     BSD_CORE_ASSERT(success, "Could not initialize GLFW!");
     glfwSetErrorCallback(GLFWErrorCallback);
-    s_GLFWInitialized = true;
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -49,7 +55,7 @@ void MacWindow::Init(const WindowProps &props) {
 
   m_Window = glfwCreateWindow((int)props.Width, (int)props.Height,
                               m_Data.Title.c_str(), nullptr, nullptr);
-
+  ++s_GLFWWindowCount;
   m_Context = new OpenGLContext(m_Window);
   m_Context->Init();
   // ^
@@ -143,14 +149,23 @@ void MacWindow::Init(const WindowProps &props) {
       });
 }
 
-void MacWindow::Shutdown() { glfwDestroyWindow(m_Window); }
+void MacWindow::Shutdown() {
+  BSD_PROFILE_FUNCTION();
+  glfwDestroyWindow(m_Window);
+  --s_GLFWWindowCount;
+
+  if (s_GLFWWindowCount == 0)
+    glfwTerminate();
+}
 
 void MacWindow::OnUpdate() {
+  BSD_PROFILE_FUNCTION();
   glfwPollEvents();
   m_Context->SwapBuffers();
 }
 
 void MacWindow::SetVSync(bool enabled) {
+  BSD_PROFILE_FUNCTION();
   if (enabled)
     glfwSwapInterval(1);
   else

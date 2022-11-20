@@ -19,6 +19,7 @@ static GLenum ShaderTypeFromString(const std::string &type) {
 }
 
 OpenGLShader::OpenGLShader(const std::string &filePath) {
+  BSD_PROFILE_FUNCTION();
   std::string source = ReadFile(filePath);
   auto shaderSources = PreProcess(source);
   Compile(shaderSources);
@@ -36,6 +37,7 @@ OpenGLShader::OpenGLShader(const std::string &name,
                            const std::string &vertexSrc,
                            const std::string &fragmentSrc)
     : m_ShaderName(name) {
+  BSD_PROFILE_FUNCTION();
   std::unordered_map<GLenum, std::string> sources;
   sources[GL_VERTEX_SHADER] = vertexSrc;
   sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -44,6 +46,7 @@ OpenGLShader::OpenGLShader(const std::string &name,
 
 void OpenGLShader::Compile(
     const std::unordered_map<GLenum, std::string> &shaderSources) {
+  BSD_PROFILE_FUNCTION();
 
   GLuint program = glCreateProgram();
   BSD_CORE_ASSERT(shaderSources.size() <= 2,
@@ -108,9 +111,13 @@ void OpenGLShader::Compile(
   m_ShaderID = program;
 }
 
-OpenGLShader::~OpenGLShader() { glDeleteProgram(m_ShaderID); }
+OpenGLShader::~OpenGLShader() {
+  BSD_PROFILE_FUNCTION();
+  glDeleteProgram(m_ShaderID);
+}
 
 std::string OpenGLShader::ReadFile(const std::string &filePath) {
+  BSD_PROFILE_FUNCTION();
   std::string result;
   std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
@@ -152,9 +159,15 @@ OpenGLShader::PreProcess(const std::string &source) {
   return shaderSources;
 }
 
-void OpenGLShader::Bind() const { glUseProgram(m_ShaderID); }
+void OpenGLShader::Bind() const {
+  BSD_PROFILE_FUNCTION();
+  glUseProgram(m_ShaderID);
+}
 
-void OpenGLShader::Unbind() const { glUseProgram(0); }
+void OpenGLShader::Unbind() const {
+  BSD_PROFILE_FUNCTION();
+  glUseProgram(0);
+}
 
 void OpenGLShader::SetInt(const std::string &name, const int &value) {
   UploadUniformInt(name, value);

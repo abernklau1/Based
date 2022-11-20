@@ -13,6 +13,9 @@
 #include <unordered_set>
 #include <vector>
 
+#include "Based/Core/Log.h"
+#include "Based/Debug/Instrumentor.h"
+
 // #include <OpenGL/gl3.h>
 
 #ifdef BSD_PLATFORM_WINDOWS
