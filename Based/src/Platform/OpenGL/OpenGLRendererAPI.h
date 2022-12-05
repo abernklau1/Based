@@ -11,6 +11,6 @@ public:
                            uint32_t height) override;
   virtual void Clear() override;
 
-  virtual void DrawIndexed(const Ref<VertexArray> &vertexArray) override;
+  virtual void DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount) override;
 };
 } // namespace Based
