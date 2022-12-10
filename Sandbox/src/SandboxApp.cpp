@@ -35,12 +35,12 @@ void Sandbox2D::OnUpdate(Based::Timestep ts) {
 
   Based::Renderer2D::BeginScene(m_CameraController.GetCamera());
   Based::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.0f, 1.0f},
-                              {0.8f, 0.2f, 0.3f, 1.0f});
+                              {0.0f, 1.0f, 1.0f, 1.0f});
   // Based::Renderer2D::DrawRotatedQuad({-1.0f, -1.0f}, {1.0f, 1.0f},
                                      // glm::radians(45.0f), m_CheckerboardTexture,
                                      // 1.0f);
   Based::Renderer2D::DrawQuad({-1.0f, -1.0f}, {0.8f, 0.8f},
-                              {0.8f, 0.2f, 0.3f, 1.0f});
+                              {1.0f, 0.0f, 0.0f, 1.0f});
   Based::Renderer2D::EndScene();
 }
 
@@ -48,7 +48,7 @@ void Sandbox2D::OnImGuiRender() {
   BSD_PROFILE_FUNCTION();
 
   ImGui::Begin("Settings");
-  ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+  // ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
   ImGui::End();
 }

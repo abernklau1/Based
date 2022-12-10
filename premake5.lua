@@ -4,7 +4,7 @@ startproject "Sandbox"
 
 configurations {
   "Debug",
-  "release",
+  "Release",
   "Dist"
 }
 

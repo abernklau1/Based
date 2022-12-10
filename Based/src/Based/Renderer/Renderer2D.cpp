@@ -10,8 +10,8 @@
 namespace Based {
 struct QuadVertex {
   glm::vec3 Position;
-  glm::vec2 TexCoord;
   glm::vec4 Color;
+  glm::vec2 TextCoord;
   // TODO: texid
 };
 
@@ -38,16 +38,11 @@ void Renderer2D::Init() {
   // Vertex Array and Vertex Buffer
   s_Data.QuadVertexArray = VertexArray::Create();
 
-  // float squareVertices[5 * 4] = {
-  //     -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
-  //     0.5f,  0.5f,  0.0f, 1.0f, 1.0f, -0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
-  // };
-
   s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 
   s_Data.QuadVertexBuffer->SetLayout({{ShaderDataType::Float3, "a_Position"},
-                       {ShaderDataType::Float2, "a_TextCoord"},
-                        {ShaderDataType::Float4, "a_Color"}});
+                                      {ShaderDataType::Float4, "a_Color"},
+                                      {ShaderDataType::Float2, "a_TextCoord"},});
 
   s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -68,8 +63,8 @@ void Renderer2D::Init() {
 
   s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
   // Index Buffer
-  Ref<IndexBuffer> squareIB = IndexBuffer::Create(quadIndices, s_Data.MaxIndices);
-  s_Data.QuadVertexArray->SetIndexBuffer(squareIB);
+  Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, s_Data.MaxIndices);
+  s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
   delete[] quadIndices;
 
   s_Data.WhiteTexture = Texture2D::Create(1, 1);
@@ -117,22 +112,22 @@ void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size,
 
   s_Data.QuadVertexBufferPtr->Position = position;
   s_Data.QuadVertexBufferPtr->Color = color;
-  s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
+  s_Data.QuadVertexBufferPtr->TextCoord = {0.0f, 0.0f};
   s_Data.QuadVertexBufferPtr++;
 
   s_Data.QuadVertexBufferPtr->Position = {position.x + size.x, position.y, 0.0f};
   s_Data.QuadVertexBufferPtr->Color = color;
-  s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
+  s_Data.QuadVertexBufferPtr->TextCoord = {1.0f, 0.0f};
   s_Data.QuadVertexBufferPtr++;
 
   s_Data.QuadVertexBufferPtr->Position = {position.x + size.x, position.y + size.y, 0.0f};
   s_Data.QuadVertexBufferPtr->Color = color;
-  s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
+  s_Data.QuadVertexBufferPtr->TextCoord = {1.0f, 1.0f};
   s_Data.QuadVertexBufferPtr++;
 
   s_Data.QuadVertexBufferPtr->Position = {position.x, position.y + size.y, 0.0f};
   s_Data.QuadVertexBufferPtr->Color = color;
-  s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
+  s_Data.QuadVertexBufferPtr->TextCoord = {0.0f, 1.0f};
   s_Data.QuadVertexBufferPtr++;
 
   s_Data.QuadIndexCount += 6;
