@@ -2,6 +2,8 @@
 
 // For use by Based Applications
 
+#include "Based/Core/Core.h"
+
 #include "Based/Core/Application.h"
 #include "Based/Core/Log.h"
 
@@ -16,7 +18,7 @@
 // --- Input and Codes ---------------------------
 #include "Based/Core/Input.h"
 #include "Based/Core/KeyCodes.h"
-#include "Based/Core/MouseButtonCodes.h"
+#include "Based/Core/MouseCodes.h"
 // -----------------------------------------------
 
 // --- Renderer ----------------------------------
@@ -30,8 +32,4 @@
 #include "Based/Renderer/VertexArray.h"
 
 #include "Based/Renderer/OrthographicCamera.h"
-// -----------------------------------------------
-
-// --- Entry Point -------------------------------
-#include "Based/Core/EntryPoint.h"
 // -----------------------------------------------

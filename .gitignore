@@ -7,3 +7,5 @@ Makefile
 RunProject.sh
 .cache/**
 BasedProfile**
+imgui.ini
+Based.log

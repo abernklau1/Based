@@ -1,28 +1,23 @@
-#include "ImGuiLayer.h"
+#include "Based/ImGui/ImGuiLayer.h"
 #include "bsdpch.h"
 
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
-#include "imgui.h"
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <imgui.h>
 
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 #include "Based/Core/Application.h"
 
 namespace Based {
 ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
 
-ImGuiLayer::~ImGuiLayer() {}
-
 void ImGuiLayer::OnAttach() {
   BSD_PROFILE_FUNCTION();
 
   IMGUI_CHECKVERSION();
-  ImGuiContext *context = ImGui::CreateContext();
-  ImGui::SetCurrentContext(context);
-
-  ImGuiIO &io = ImGui::GetIO();
-  (void)io;
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO(); (void)io;
 
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;

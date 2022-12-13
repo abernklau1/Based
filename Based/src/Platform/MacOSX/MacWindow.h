@@ -2,7 +2,6 @@
 #include "Based/Core/Window.h"
 #include "Based/Renderer/RendererContext.h"
 
-// --- Modern OpenGL Static Library
 #include <glad/glad.h>
 
 // --- GLFW Static Library
@@ -26,7 +25,7 @@ public:
   void SetVSync(bool enabled) override;
   bool IsVSync() const override;
 
-  inline virtual void *GetNativeWindow() const override { return m_Window; }
+  virtual void *GetNativeWindow() const override { return m_Window; }
 
 private:
   virtual void Init(const WindowProps &props);
@@ -34,7 +33,7 @@ private:
 
 private:
   GLFWwindow *m_Window;
-  RendererContext *m_Context;
+  Scope<RendererContext> m_Context;
   struct WindowData {
     std::string Title;
     unsigned int Width, Height;

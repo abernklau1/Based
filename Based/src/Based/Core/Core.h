@@ -66,14 +66,14 @@
   {                                                                            \
     if (!(x)) {                                                                \
       BSD_ERROR("Assertion Failed: {0}", __VA_ARGS__);                         \
-    // __debugbreak();                                                          \
+      __debugbreak();                                                          \
     }                                                                          \
   }
 #define BSD_CORE_ASSERT(x, ...)                                                \
   {                                                                            \
     if (!(x)) {                                                                \
       BSD_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__);                    \
-    // __debugbreak();                                                          \
+      __debugbreak();                                                          \
     }                                                                          \
   }
 #else

@@ -1,12 +1,12 @@
-#include "Application.h"
+#include "Based/Core/Application.h"
 #include "Based/Core/Log.h"
 #include "bsdpch.h"
 
 #include "Based/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "Based/Core/Input.h"
 
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 namespace Based {
 
@@ -51,9 +51,9 @@ void Application::OnEvent(Event &e) {
 
   dispatcher.Dispatch<WindowResizeEvent>(
       BSD_BIND_EVENT_FN(Application::OnWindowResize));
-  for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
+  for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 
-    (*--it)->OnEvent(e);
+    (*it)->OnEvent(e);
     if (e.Handled)
       break;
   }

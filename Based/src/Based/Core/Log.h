@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Based/Core/Core.h"
 
 // ---FMT package include for spdlog & Clang compilation-----------
 #define FMT_HEADER_ONLY
@@ -11,20 +11,20 @@
 #include "spdlog/spdlog.h"
 
 namespace Based {
-class BASED_API Log {
+class Log {
 public:
   static void Init();
 
-  inline static std::shared_ptr<spdlog::logger> &GetCoreLogger() {
+  inline static Ref<spdlog::logger> &GetCoreLogger() {
     return s_CoreLogger;
   }
-  inline static std::shared_ptr<spdlog::logger> &GetClientLogger() {
+  inline static Ref<spdlog::logger> &GetClientLogger() {
     return s_ClientLogger;
   }
 
 private:
-  static std::shared_ptr<spdlog::logger> s_CoreLogger;
-  static std::shared_ptr<spdlog::logger> s_ClientLogger;
+  static Ref<spdlog::logger> s_CoreLogger;
+  static Ref<spdlog::logger> s_ClientLogger;
 };
 } // namespace Based
 

@@ -1,7 +1,7 @@
 #include "OpenGLTexture.h"
 #include "bsdpch.h"
 
-#include "stb_image.h"
+#include <stb_image.h>
 
 namespace Based {
 

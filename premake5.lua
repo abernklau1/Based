@@ -8,20 +8,28 @@ configurations {
   "Dist"
 }
 
+flags {
+  "MultiProcessorCompile"
+}
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Based/vendor/GLFW/include"
+IncludeDir["Glad"] = "Based/vendor/Glad/include"
+IncludeDir["ImGui"] = "Based/vendor/imgui"
+IncludeDir["glm"] = "Based/vendor/glm"
+IncludeDir["stb_img"] = "Based/vendor/stb_img"
+
+group "Dependencies"
 include "Based/vendor/GLFW"
 include "Based/vendor/Glad"
 include "Based/vendor/imgui"
-
--- group "Dependencies"
--- include "Based/vendor/GLFW"
--- include "Based/vendor/Glad"
--- include "Based/vendor/imgui"
--- group ""
+group ""
 
 project "Based"
 location "Based"
+kind "StaticLib"
 language "C++"
 cppdialect "C++17"
 staticruntime "on"
@@ -44,20 +52,16 @@ files {
 includedirs {
   "%{prj.name}/src",
   "%{prj.name}/vendor/spdlog/include",
-  "%{prj.name}/vendor/GLFW/include",
-  "%{prj.name}/vendor/Glad/include",
-  "%{prj.name}/vendor/imgui",
-  "%{prj.name}/vendor/glm",
+  "%{IncludeDir.GLFW}",
+	"%{IncludeDir.Glad}",
+	"%{IncludeDir.ImGui}",
+	"%{IncludeDir.glm}",
   "%{prj.name}/vendor/stb_img"
 }
 
 links {
   "Glad",
   "GLFW",
-  "glfw",
-  "Cocoa.framework",
-  "OpenGL.framework",
-  "IOKit.framework",
   "imgui",
 }
 
@@ -69,21 +73,28 @@ defines {
 
 filter "system:macosx"
 systemversion "12"
-kind "SharedLib"
-staticruntime "off"
+
+links {
+  "glfw",
+  "Cocoa.framework",
+  "OpenGL.framework",
+  "IOKit.framework",
+
+}
 
 defines {
   "BSD_PLATFORM_MAC",
-  "BSD_BUILD_SHRD_LIB",
 }
 
 filter "system:windows"
 systemversion "latest"
-kind "StaticLib"
+
+links {
+  "opengl32.lib"
+}
 
 defines {
   "BSD_PLATFORM_WINDOWS",
-  "BSD_BUILD_SL"
 }
 
 filter "configurations:Debug"
@@ -111,10 +122,6 @@ staticruntime "on"
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-links {
-  "Based"
-}
-
 files {
   "%{prj.name}/src/**.h",
   "%{prj.name}/src/**.cpp"
@@ -127,9 +134,21 @@ includedirs {
   "Based/vendor/glm"
 }
 
+links {
+  "Based",
+}
+
 filter "system:macosx"
 systemversion "12"
-staticruntime "off"
+links {
+  "Glad",
+  "GLFW",
+  "glfw",
+  "Cocoa.framework",
+  "OpenGL.framework",
+  "IOKit.framework",
+  "imgui",
+}
 
 defines {
   "BSD_PLATFORM_MAC",

@@ -16,11 +16,11 @@ struct WindowProps {
       : Title(title), Width(width), Height(height) {}
 };
 
-class BASED_API Window {
+class Window {
 public:
   using EventCallbackFn = std::function<void(Event &)>;
 
-  virtual ~Window() {}
+  virtual ~Window() = default;
 
   virtual void OnUpdate() = 0;
 
