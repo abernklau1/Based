@@ -131,7 +131,8 @@ includedirs {
   "Based/src",
   "Based/vendor/spdlog/include",
   "Based/vendor",
-  "Based/vendor/glm"
+  "Based/vendor/glm",
+  "Sandbox/src"
 }
 
 links {

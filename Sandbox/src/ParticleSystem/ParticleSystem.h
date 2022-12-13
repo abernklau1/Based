@@ -12,7 +12,7 @@ struct ParticleProps {
 
 class ParticleSystem {
 public:
-  ParticleSystem();
+  ParticleSystem(uint32_t maxParticles = 100000);
 
   void OnUpdate(Based::Timestep ts);
   void OnRender(Based::OrthographicCamera& camera);
@@ -33,6 +33,6 @@ private:
   };
 
   std::vector<Particle> m_ParticlePool;
-  uint32_t m_PoolIndex = 999;
+  uint32_t m_PoolIndex;
 };
 
