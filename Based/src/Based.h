@@ -2,7 +2,7 @@
 
 // For use by Based Applications
 
-#include "Based/Core/Core.h"
+#include "Based/Core/Base.h"
 
 #include "Based/Core/Application.h"
 #include "Based/Core/Log.h"

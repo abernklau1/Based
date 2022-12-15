@@ -21,6 +21,8 @@ private:
 
   // Temp
   Based::Ref<Based::Texture2D> m_CheckerboardTexture;
+  Based::Ref<Based::Texture2D> m_SpriteSheet;
+  Based::Ref<Based::SubTexture2D> m_TextureDirt, m_TexturePumpkin;
 
   glm::vec4 m_SquareColor = {0.8f, 0.2f, 0.3f, 1.0f};
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Based/Core/Core.h"
+#include "Based/Core/Base.h"
 #include "Based/Core/LayerStack.h"
 #include "Based/Core/Window.h"
 #include "Based/Events/ApplicationEvent.h"
@@ -12,40 +12,42 @@
 
 int main(int argc, char** argv);
 
-namespace Based {
-class Application {
-public:
-  Application();
-  virtual ~Application();
+namespace Based
+{
+    class Application
+    {
+        public:
+            Application();
+            virtual ~Application();
 
-  void OnEvent(Event &e);
+            void OnEvent(Event& e);
 
-  void PushLayer(Layer *layer);
-  void PushOverlay(Layer *layer);
+            void PushLayer(Layer* layer);
+            void PushOverlay(Layer* layer);
 
-  Window &GetWindow() { return *m_Window; }
+            Window& GetWindow() { return *m_Window; }
 
-  static Application &Get() { return *s_Instance; }
+            static Application& Get() { return *s_Instance; }
 
-private:
-  void Run();
-  bool OnWindowClose(WindowCloseEvent &e);
-  bool OnWindowResize(WindowResizeEvent &e);
+        private:
+            void Run();
+            bool OnWindowClose(WindowCloseEvent& e);
+            bool OnWindowResize(WindowResizeEvent& e);
 
-private:
-  Scope<Window> m_Window;
-  ImGuiLayer *m_ImGuiLayer;
-  bool m_Running = true;
-  bool m_Minimize = false;
-  LayerStack m_LayerStack;
-  float m_LastFrameTime = 0.0f;
+        private:
+            Scope<Window> m_Window;
+            ImGuiLayer* m_ImGuiLayer;
+            bool m_Running  = true;
+            bool m_Minimize = false;
+            LayerStack m_LayerStack;
+            float m_LastFrameTime = 0.0f;
 
-private:
-  static Application *s_Instance;
-  friend int ::main(int argc, char** argv);
-};
+        private:
+            static Application* s_Instance;
+            friend int ::main(int argc, char** argv);
+    };
 
-// To be defined in client
+    // To be defined in client
 
-Application *CreateApplication();
+    Application* CreateApplication();
 } // namespace Based
