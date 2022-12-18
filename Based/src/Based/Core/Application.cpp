@@ -13,21 +13,21 @@ namespace Based
 
     Application* Application::s_Instance = nullptr;
 
-    Application::Application()
+    Application::Application( const std::string& name )
     {
         BSD_PROFILE_FUNCTION();
 
-        BSD_CORE_ASSERT(!s_Instance, "Application already exists");
+        BSD_CORE_ASSERT( !s_Instance, "Application already exists" );
 
         s_Instance = this;
 
-        m_Window = Window::Create();
-        m_Window->SetEventCallback(BSD_BIND_EVENT_FN(Application::OnEvent));
+        m_Window = Window::Create( WindowProps( name ) );
+        m_Window->SetEventCallback( BSD_BIND_EVENT_FN( Application::OnEvent ) );
 
         Renderer::Init();
 
         m_ImGuiLayer = new ImGuiLayer();
-        PushOverlay(m_ImGuiLayer);
+        PushOverlay( m_ImGuiLayer );
     }
 
     Application::~Application()
@@ -36,59 +36,61 @@ namespace Based
         Renderer::Shutdown();
     }
 
-    void Application::PushLayer(Layer* layer)
+    void Application::PushLayer( Layer* layer )
     {
         BSD_PROFILE_FUNCTION();
-        m_LayerStack.PushLayer(layer);
+        m_LayerStack.PushLayer( layer );
         layer->OnAttach();
     }
 
-    void Application::PushOverlay(Layer* layer)
+    void Application::PushOverlay( Layer* layer )
     {
         BSD_PROFILE_FUNCTION();
-        m_LayerStack.PushOverlay(layer);
+        m_LayerStack.PushOverlay( layer );
         layer->OnAttach();
     }
 
-    void Application::OnEvent(Event& e)
+    void Application::Close() { m_Running = false; }
+
+    void Application::OnEvent( Event& e )
     {
         BSD_PROFILE_FUNCTION();
-        EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<WindowCloseEvent>(BSD_BIND_EVENT_FN(Application::OnWindowClose));
+        EventDispatcher dispatcher( e );
+        dispatcher.Dispatch<WindowCloseEvent>( BSD_BIND_EVENT_FN( Application::OnWindowClose ) );
 
-        dispatcher.Dispatch<WindowResizeEvent>(BSD_BIND_EVENT_FN(Application::OnWindowResize));
+        dispatcher.Dispatch<WindowResizeEvent>( BSD_BIND_EVENT_FN( Application::OnWindowResize ) );
 
-        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+        for ( auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it )
         {
 
-            if (e.Handled)
+            if ( e.Handled )
                 break;
-            (*it)->OnEvent(e);
+            ( *it )->OnEvent( e );
         }
     }
 
     void Application::Run()
     {
         BSD_PROFILE_FUNCTION();
-        while (m_Running)
+        while ( m_Running )
         {
-            BSD_PROFILE_SCOPE("Engine Loop");
+            BSD_PROFILE_SCOPE( "Engine Loop" );
 
             float time        = (float)glfwGetTime(); // Platform::GetTime()
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime   = time;
 
-            if (!m_Minimize)
+            if ( !m_Minimize )
             {
                 {
-                    BSD_PROFILE_SCOPE("Application LayerStack OnUpdate")
-                    for (Layer* layer : m_LayerStack)
-                        layer->OnUpdate(timestep);
+                    BSD_PROFILE_SCOPE( "Application LayerStack OnUpdate" )
+                    for ( Layer* layer : m_LayerStack )
+                        layer->OnUpdate( timestep );
                 }
                 m_ImGuiLayer->Begin();
                 {
-                    BSD_PROFILE_SCOPE("ImGui LayerStack OnUpdate")
-                    for (Layer* layer : m_LayerStack)
+                    BSD_PROFILE_SCOPE( "ImGui LayerStack OnUpdate" )
+                    for ( Layer* layer : m_LayerStack )
                         layer->OnImGuiRender();
                 }
                 m_ImGuiLayer->End();
@@ -98,22 +100,22 @@ namespace Based
         }
     }
 
-    bool Application::OnWindowClose(WindowCloseEvent& e)
+    bool Application::OnWindowClose( WindowCloseEvent& e )
     {
         m_Running = false;
         return true;
     }
 
-    bool Application::OnWindowResize(WindowResizeEvent& e)
+    bool Application::OnWindowResize( WindowResizeEvent& e )
     {
         BSD_PROFILE_FUNCTION();
-        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        if ( e.GetWidth() == 0 || e.GetHeight() == 0 )
         {
             m_Minimize = true;
             return false;
         }
         m_Minimize = false;
-        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+        Renderer::OnWindowResize( e.GetWidth(), e.GetHeight() );
 
         return false;
     }

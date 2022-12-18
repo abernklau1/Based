@@ -21,9 +21,11 @@ namespace Based
     class OrthographicCameraController
     {
         public:
-            OrthographicCameraController(float aspectRation, bool rotation = false);
-            void OnUpdate(Timestep ts);
-            void OnEvent(Event& e);
+            OrthographicCameraController( float aspectRation, bool rotation = false );
+            void OnUpdate( Timestep ts );
+            void OnEvent( Event& e );
+
+            void OnResize( float width, float height );
 
             OrthographicCamera& GetCamera() { return m_Camera; }
 
@@ -31,13 +33,19 @@ namespace Based
 
             float GetZoomLevel() const { return m_ZoomLevel; }
 
-            void SetZoomLevel(float level) { m_ZoomLevel = level; }
+            void SetZoomLevel( float level )
+            {
+                m_ZoomLevel = level;
+                CalculateView();
+            }
 
             const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
         private:
-            bool OnMouseScrolled(MouseScrolledEvent& e);
-            bool OnWindowResize(WindowResizeEvent& e);
+            void CalculateView();
+
+            bool OnMouseScrolled( MouseScrolledEvent& e );
+            bool OnWindowResize( WindowResizeEvent& e );
 
         private:
             float m_AspectRatio;
@@ -47,7 +55,7 @@ namespace Based
 
             bool m_Rotation;
 
-            glm::vec3 m_CameraPosition     = {0.0f, 0.0f, 0.0f};
+            glm::vec3 m_CameraPosition     = { 0.0f, 0.0f, 0.0f };
             float m_CameraRotation         = 0.0f;
             float m_CameraTranslationSpeed = 1.0f, m_CameraRotationSpeed = 1.0f;
     };

@@ -10,29 +10,31 @@
 
 #include "Based/Core/Timestep.h"
 
-int main(int argc, char** argv);
+int main( int argc, char** argv );
 
 namespace Based
 {
     class Application
     {
         public:
-            Application();
+            Application( const std::string& name = "Based App" );
             virtual ~Application();
 
-            void OnEvent(Event& e);
+            void OnEvent( Event& e );
 
-            void PushLayer(Layer* layer);
-            void PushOverlay(Layer* layer);
+            void PushLayer( Layer* layer );
+            void PushOverlay( Layer* layer );
 
             Window& GetWindow() { return *m_Window; }
+
+            void Close();
 
             static Application& Get() { return *s_Instance; }
 
         private:
             void Run();
-            bool OnWindowClose(WindowCloseEvent& e);
-            bool OnWindowResize(WindowResizeEvent& e);
+            bool OnWindowClose( WindowCloseEvent& e );
+            bool OnWindowResize( WindowResizeEvent& e );
 
         private:
             Scope<Window> m_Window;
@@ -44,7 +46,7 @@ namespace Based
 
         private:
             static Application* s_Instance;
-            friend int ::main(int argc, char** argv);
+            friend int ::main( int argc, char** argv );
     };
 
     // To be defined in client

@@ -27,7 +27,9 @@
 #include "Based/Renderer/Renderer2D.h"
 
 #include "Based/Renderer/Buffer.h"
+#include "Based/Renderer/Framebuffer.h"
 #include "Based/Renderer/Shader.h"
+#include "Based/Renderer/SubTexture2D.h"
 #include "Based/Renderer/Texture.h"
 #include "Based/Renderer/VertexArray.h"
 

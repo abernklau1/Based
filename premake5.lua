@@ -1,6 +1,6 @@
 workspace "Based"
 architecture "ARM64"
-startproject "Sandbox"
+startproject "Based-Editor"
 
 configurations {
   "Debug",
@@ -53,9 +53,9 @@ includedirs {
   "%{prj.name}/src",
   "%{prj.name}/vendor/spdlog/include",
   "%{IncludeDir.GLFW}",
-	"%{IncludeDir.Glad}",
-	"%{IncludeDir.ImGui}",
-	"%{IncludeDir.glm}",
+  "%{IncludeDir.Glad}",
+  "%{IncludeDir.ImGui}",
+  "%{IncludeDir.glm}",
   "%{prj.name}/vendor/stb_img"
 }
 
@@ -133,6 +133,64 @@ includedirs {
   "Based/vendor",
   "Based/vendor/glm",
   "Sandbox/src"
+}
+
+links {
+  "Based",
+}
+
+filter "system:macosx"
+systemversion "12"
+links {
+  "Glad",
+  "GLFW",
+  "glfw",
+  "Cocoa.framework",
+  "OpenGL.framework",
+  "IOKit.framework",
+  "imgui",
+}
+
+defines {
+  "BSD_PLATFORM_MAC",
+}
+
+filter "configurations:Debug"
+defines "BSD_DEBUG"
+runtime "Debug"
+symbols "On"
+
+filter "configurations:Release"
+defines "BSD_RELEASE"
+runtime "Release"
+optimize "On"
+
+filter "configurations:Dist"
+defines "BSD_DIST"
+runtime "Release"
+optimize "On"
+
+project "Based-Editor"
+location "Based-Editor"
+kind "ConsoleApp"
+language "C++"
+cppdialect "C++17"
+staticruntime "on"
+
+targetdir("bin/" .. outputdir .. "/%{prj.name}")
+objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+files {
+  "%{prj.name}/src/**.h",
+  "%{prj.name}/src/**.cpp"
+}
+
+includedirs {
+  "Based/src",
+  "Based/vendor/spdlog/include",
+  "Based/vendor",
+  "Based/vendor/glm",
+  "Based-Editor/src"
 }
 
 links {

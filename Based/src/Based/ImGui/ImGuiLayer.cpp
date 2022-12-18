@@ -11,7 +11,7 @@
 
 namespace Based
 {
-    ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") { }
+    ImGuiLayer::ImGuiLayer() : Layer( "ImGuiLayer" ) { }
 
     void ImGuiLayer::OnAttach()
     {
@@ -29,17 +29,17 @@ namespace Based
         ImGui::StyleColorsDark();
 
         ImGuiStyle& style = ImGui::GetStyle();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        if ( io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable )
         {
             style.WindowRounding              = 0.0f;
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
         Application& app   = Application::Get();
-        GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        GLFWwindow* window = static_cast<GLFWwindow*>( app.GetWindow().GetNativeWindow() );
+        ImGui_ImplGlfw_InitForOpenGL( window, true );
 
-        ImGui_ImplOpenGL3_Init("#version 410 core");
+        ImGui_ImplOpenGL3_Init( "#version 410 core" );
     }
 
     void ImGuiLayer::OnDetach()
@@ -50,11 +50,11 @@ namespace Based
         ImGui::DestroyContext();
     }
 
-    void ImGuiLayer::OnEvent(Event& e)
+    void ImGuiLayer::OnEvent( Event& e )
     {
-        ImGuiIO io = ImGui::GetIO();
-        e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
-        e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+        // ImGuiIO io = ImGui::GetIO();
+        // e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+        // e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
     }
 
     void ImGuiLayer::Begin()
@@ -70,18 +70,18 @@ namespace Based
         BSD_PROFILE_FUNCTION();
         ImGuiIO& io      = ImGui::GetIO();
         Application& app = Application::Get();
-        io.DisplaySize   = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
+        io.DisplaySize   = ImVec2( (float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight() );
 
         // Rendering
         ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
 
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        if ( io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable )
         {
             GLFWwindow* backup_current_context = glfwGetCurrentContext();
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(backup_current_context);
+            glfwMakeContextCurrent( backup_current_context );
         }
     }
 
