@@ -31,7 +31,8 @@ namespace Based
         BSD_PROFILE_FUNCTION();
 
         // Update
-        m_CameraController.OnUpdate( ts );
+        if ( m_IsViewportFocused )
+            m_CameraController.OnUpdate( ts );
 
         // Renderer
         // Reset Stats Here
@@ -152,8 +153,14 @@ namespace Based
         ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, ImVec2( 0, 0 ) );
 
         ImGui::Begin( "Viewport" );
+        m_IsViewportFocused = ImGui::IsWindowFocused();
+        m_IsViewportHovered = ImGui::IsWindowHovered();
+
+        Application::Get().GetImGuiLayer()->SetBlockEvents( !m_IsViewportFocused || !m_IsViewportHovered );
+        BSD_CORE_WARN( "Focused: {0}", ImGui::IsWindowFocused() );
+        BSD_CORE_WARN( "Hovered: {0}", ImGui::IsWindowHovered() );
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        if ( m_ViewportSize != *( (glm::vec2*)&viewportPanelSize ) )
+        if ( m_ViewportSize != *( (glm::vec2*)&viewportPanelSize ) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0 )
         {
             m_Framebuffer->Resize( viewportPanelSize.x, viewportPanelSize.y );
             m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
