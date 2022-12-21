@@ -20,6 +20,7 @@ IncludeDir["Glad"] = "Based/vendor/Glad/include"
 IncludeDir["ImGui"] = "Based/vendor/imgui"
 IncludeDir["glm"] = "Based/vendor/glm"
 IncludeDir["stb_img"] = "Based/vendor/stb_img"
+IncludeDir["entt"] = "Based/vendor/entt/include"
 
 group "Dependencies"
 include "Based/vendor/GLFW"
@@ -56,7 +57,8 @@ includedirs {
   "%{IncludeDir.Glad}",
   "%{IncludeDir.ImGui}",
   "%{IncludeDir.glm}",
-  "%{prj.name}/vendor/stb_img"
+  "%{prj.name}/vendor/stb_img",
+  "%{prj.name}/vendor/entt/include"
 }
 
 links {
@@ -132,7 +134,8 @@ includedirs {
   "Based/vendor/spdlog/include",
   "Based/vendor",
   "Based/vendor/glm",
-  "Sandbox/src"
+  "Sandbox/src",
+  "Based/vendor/entt/include"
 }
 
 links {
@@ -190,7 +193,8 @@ includedirs {
   "Based/vendor/spdlog/include",
   "Based/vendor",
   "Based/vendor/glm",
-  "Based-Editor/src"
+  "Based-Editor/src",
+  "Based/vendor/entt/include"
 }
 
 links {

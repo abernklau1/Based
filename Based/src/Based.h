@@ -9,7 +9,13 @@
 
 #include "Based/Core/Timestep.h"
 
+// --- Scene -------------------------------------
+#include "Based/Scene/Components.h"
+#include "Based/Scene/Scene.h"
+// -----------------------------------------------
+
 #include "Based/Renderer/OrthographicCameraController.h"
+
 // --- Layers ------------------------------------
 #include "Based/Core/Layer.h"
 #include "Based/ImGui/ImGuiLayer.h"
