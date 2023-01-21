@@ -11,6 +11,7 @@
 
 // --- Scene -------------------------------------
 #include "Based/Scene/Components.h"
+#include "Based/Scene/Entity.h"
 #include "Based/Scene/Scene.h"
 // -----------------------------------------------
 

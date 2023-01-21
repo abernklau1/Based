@@ -26,10 +26,9 @@ namespace Based
 
     m_Scene = CreateRef<Scene>();
 
+    // Entity
     auto square = m_Scene->CreateEntity();
-
-    m_Scene->Reg().emplace<TransformComponent>( square );
-    m_Scene->Reg().emplace<SpriteRendererComponent>( square, glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f } );
+    square.AddComponent<SpriteRendererComponent>( glm::vec4( 0.0f, 1.0f, 0.0f, 1.0f ) );
 
     m_SquareEntity = square;
   }
@@ -136,7 +135,7 @@ namespace Based
     ImGui::Text( "Total Vertex Count: %d", stats.GetTotalVertexCount() );
     ImGui::Text( "Total Index Count: %d", stats.GetTotalIndexCount() );
 
-    auto& squareColor = m_Scene->Reg().get<SpriteRendererComponent>( m_SquareEntity ).Color;
+    auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
     ImGui::ColorEdit4( "Square Color", glm::value_ptr( squareColor ) );
 
     ImGui::End();

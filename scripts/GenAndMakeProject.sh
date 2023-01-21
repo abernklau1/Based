@@ -1,4 +1,4 @@
-# pushd ../
+pushd ../
 
 vendor/bin/premake/premake5 gmake2
 if [ "$1" == "Editor" ]
@@ -12,3 +12,4 @@ then
 else
   echo "Unknown project"
 fi
+popd ../

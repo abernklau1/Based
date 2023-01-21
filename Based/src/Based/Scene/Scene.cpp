@@ -1,6 +1,7 @@
 #include "Based/Scene/Scene.h"
 #include "Based.h"
 #include "Based/Scene/Components.h"
+#include "Based/Scene/Entity.h"
 #include "bsdpch.h"
 
 #include <glm/glm.hpp>
@@ -50,5 +51,12 @@ namespace Based
     }
   }
 
-  entt::entity Scene::CreateEntity() { return m_Registry.create(); }
+  Entity Scene::CreateEntity( const std::string& name )
+  {
+    Entity entity = { m_Registry.create(), this };
+    entity.AddComponent<TransformComponent>();
+    auto& tag = entity.AddComponent<TagComponent>();
+    tag.Tag   = tag.Tag.empty() ? "Entity" : tag.Tag;
+    return entity;
+  }
 } // namespace Based
